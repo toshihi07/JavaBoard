@@ -31,7 +31,7 @@ public class CommentService {
         return commentMapper.findByTitle(id,text);
     }
     @Transactional
-    public Board findOne(int id) {
+    public Comment findOne(int id) {
         return commentMapper.findOne(id);
     }
     

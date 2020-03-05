@@ -18,14 +18,14 @@ public interface CommentMapper {
     @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = #{id}")
     List<Comment> findAll(int id);
     
-    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = #{id} WHERE name LIKE '%${title}%'")
+    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = ${id} AND title LIKE '%${title}%'")
     List<Comment> findByTitle(int id, String title);
     
-    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = #{id} WHERE name LIKE '%${text}%'")
+    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = ${id} AND text LIKE '%${text}%'")
     List<Comment> findByText(int id, String text);
     
     @Select("select * from comments where comment_id = #{comment_id}")
-    Board findOne(int id);
+    Comment findOne(int id);
     
     @Insert("insert into comments (title,text,board_id,user_id) values (#{title},#{text},#{board_id},#{user_id})")
     void save(Comment comment);
@@ -33,7 +33,7 @@ public interface CommentMapper {
     @Update("insert into s (title,text) values (#{title},#{text})")
     void update(Comment comment);
     
-    @Delete("delete from comment where comment_id = #{comment_id}")
+    @Delete("delete from comments where comment_id = #{comment_id}")
     void delete(int id);
     
 }

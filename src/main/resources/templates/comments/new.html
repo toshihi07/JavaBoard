@@ -5,26 +5,43 @@
 <link rel="stylesheet" media="all" th:href="@{/css/style.css}" />
 <link rel="stylesheet" media="all"
 	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+	<link href="/css/boards.css" th:href="@{/css/boards.css}"
+	rel="stylesheet"></link>
 <head>
 <meta charset="UTF-8">
 <title>投稿ページ</title>
 </head>
 <body>
-	<div>
-		<form method="post" action="#" th:action="|/boards/${board_id}/comments/create|">
-			<div class="form-group">
-				<label>タイトル</label> <input type="text" name="title"
-					class="form-control" autofocus="autofocus">
-			</div>
-			<div class="form-group">
-				<label for="exampleFormControlTextarea1">本文</label>
-				<textarea name="text" class="form-control"
-					id="exampleFormControlTextarea1" rows="3" required="required"
-					autofocus="autofocus"></textarea>
-			</div>
-		<button class="btn btn-info btn-block login" type="submit">投稿する</button>
-		</form>
+	<header class="p-header my-3">
+		<div class="p-header-container">
+			<nav class="navbar navbar-light justify-content-between">
+				<!-- 			th:boardNameの追加
+ -->
+				<div>ポケモン育成論掲示板</div>
+				<a href="/login"
+					class="btn btn-info btn-xs pull-right mx-5　navbar-brand">ログアウト</a>
+			</nav>
+		</div>
+	</header>
+	<div class="main">
+		<div class="container">
+			<form method="post" action="#"
+				th:action="|/boards/${board_id}/comments/create|">
+				<div class="form-group text-center">
+					<label>タイトル</label> <input type="text" name="title"
+						class="form-control" autofocus="autofocus">
+				</div>
+				<div class="form-group text-center">
+					<label for="exampleFormControlTextarea1">本文</label>
+					<textarea name="text" class="form-control"
+						id="exampleFormControlTextarea1" rows="3" required="required"
+						autofocus="autofocus"></textarea>
+				</div>
+				<button class="btn btn-info btn-block login" type="submit">投稿する</button>
+			</form>
+		</div>
 	</div>
+
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
 	<script type="text/javascript"

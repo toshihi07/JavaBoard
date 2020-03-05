@@ -4,6 +4,10 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import com.javaBorad.entity.Board;
@@ -14,6 +18,14 @@ public interface BoardMapper {
 	//テーブルの結合。
     @Select("select * from boards INNER JOIN users ON boards.user_id = users.user_id")
     List<Board> findAll();
+    
+    //全掲示板検索。page
+    @Select("select * from boards INNER JOIN users ON boards.user_id = users.user_id")
+    Page<Board> findAllBoard(Pageable pageable);
+    
+    //page検索
+    @Query("SELECT a FROM boards a WHERE a.name LIKE %:freeWord% ESCAPE '~' OR a.overview LIKE %:freeWord% ESCAPE '~'")
+    Page<Board> findPageByFreeWord(@Param("freeWord") String word, Pageable pageable); // (4)ページ検索に必要な情報( Pageable )をRepositoryのQueryメソッドの引数として受け取る。返り値の型は、Page<Entity> とする。
     
     @Select("select * from boards INNER JOIN users ON boards.user_id = users.user_id WHERE name LIKE '%${name}%'")
     List<Board> findByKeyword(String name);

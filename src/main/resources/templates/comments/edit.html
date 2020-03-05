@@ -5,38 +5,46 @@
 <link rel="stylesheet" media="all" th:href="@{/css/style.css}" />
 <link rel="stylesheet" media="all"
 	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+	<link href="/css/boards.css" th:href="@{/css/boards.css}"
+	rel="stylesheet"></link>
 <head>
 <meta charset="UTF-8">
 <title>投稿ページ</title>
 </head>
-   <div class="panel panel-primary">
-      <div class="panel-heading">編集ページ</div>
-      <div class="panel-body">
-        <form class="form-horizontal" th:action="@{/players/{id}(id=*{id})}" th:method="put" th:object="${comment}">
-          <div class="form-group">
-            <label class="col-md-3 control-label">Name</label>
-              <input class="form-control" type="text" th:field="*{name}" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Team</label>
-            <div class="col-md-9">
-              <input class="form-control" type="text" th:field="*{team}" />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Position</label>
-            <div class="col-md-9">
-              <input class="form-control" type="text" th:field="*{position}" />
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="col-md-offset-3 col-md-9">
-              <button class="btn btn-primary">Update</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+<body>
+	<header class="p-header my-3">
+		<div class="p-header-container">
+			<nav class="navbar navbar-light justify-content-between">
+				<!-- 			th:boardNameの追加
+ -->
+				<div>ポケモン育成論掲示板</div>
+				<form role="form" id="logout" th:action="@{/logout}" method="post"> <button  class="btn btn-info btn-xs pull-right mx-5　navbar-brand" type="submit">ログアウト</button>
+				</form> 
+			</nav>
+		</div>
+	</header>
+	<div class="main">
+		<div class="container">
+			<form method="post" action="#"
+				th:action="|/boards/${board_id}/comments/${comment_id}/update|">
+				<div class="form-group text-center">
+					<label>タイトル</label> <input type="text" name="title"
+						class="form-control" autofocus="autofocus">
+				</div>
+				<div class="form-group text-center">
+					<label for="exampleFormControlTextarea1">本文</label>
+					<textarea name="text" class="form-control"
+						id="exampleFormControlTextarea1" rows="3" required="required"
+						autofocus="autofocus"></textarea>
+				</div>
+				<button class="btn btn-info btn-block login" type="submit">更新する</button>
+			</form>
+		</div>
+	</div>
+
+	<script type="text/javascript"
+		th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
+	<script type="text/javascript"
+		th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
   </body>
 </html>

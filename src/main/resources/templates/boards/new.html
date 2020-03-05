@@ -5,30 +5,40 @@
 <link rel="stylesheet" media="all" th:href="@{/css/style.css}" />
 <link rel="stylesheet" media="all"
 	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<link href="/css/boards.css" th:href="@{/css/boards.css}"
+	rel="stylesheet"></link>
 <head>
 <meta charset="UTF-8">
 
 <title>掲示板作成</title>
 </head>
-<div class="container">
+<body>
+	<header class="p-header my-3">
+		<div class="p-header-container">
+			<nav class="navbar navbar-light justify-content-between">
+				<div class="my-2">掲示板新規作成</div>
+				<a href="/login"
+					class="btn btn-info btn-xs pull-right mx-5　navbar-brand">ログアウト</a>
+			</nav>
+		</div>
+	</header>
+	<div class="container text-center">
+		<div class="form-box">
+			<form th:method="post" th:action="@{/}" th:object="${board}"
+				th:name="userId">
+				<div class="form-group my-3">
+					<label>スレッド名:</label> <input name="name" type="text"
+						required="required" autofocus="autofocus">
+				</div>
+				<div class="form-group form-check my-3">
+					<input type="checkbox" class="form-check-input" id="exampleCheck1">
+					<label class="form-check-label" for="exampleCheck1">掲示板を作成します。よろしいですか？</label>
+				</div>
+				<button type="submit" class="btn btn-info" style= "width:30%;" >作成</button>
+			</form>
+		</div>
 
-	<div>掲示板新規作成</div>
-	<div class="form-box">
-
-		<form th:method="post" th:action="@{/boards}" th:object="${board}" th:name="userId">
-			<div class="form-group">
-				<label>スレッド名</label> <input
-					name="name" type="text" required="required" autofocus="autofocus">
-			</div>
-			<div class="form-group form-check">
-				<input type="checkbox" class="form-check-input" id="exampleCheck1">
-				<label class="form-check-label" for="exampleCheck1">掲示板を作成します。よろしいですか？</label>
-			</div>
-			<button type="submit" class="btn btn-primary">作成</button>
-		</form>
 	</div>
-
-</div>
 	<script type="text/javascript"
 		th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
 	<script type="text/javascript"

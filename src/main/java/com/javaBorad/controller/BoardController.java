@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.util.StringUtils;
 
 import com.javaBorad.LoginUserData;
 import com.javaBorad.entity.Board;
@@ -25,7 +28,7 @@ import com.javaBorad.service.BoardService;
 import com.javaBorad.service.CommentService;
 
 @Controller
-@RequestMapping("/boards")
+@RequestMapping("/")
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
@@ -41,19 +44,26 @@ public class BoardController {
 		return "boards/index";
 	}
 	
-	 @GetMapping(path = "/index")
-	  public String login(ModelMap modelMap, Principal principal,Model model ) {
-//		  PagedListHolder<Board> pagenation = new PagedListHolder();
-//		  pagenation.setPage(Integer.parseInt(p)); // 現在ページ（0から開始）
-//		  pagenation.setPageSize(12); // １ページの表示数
-	      String name = principal.getName();//get logged in username
+// ぺージネーションの実装。@PageableDefault アノテーションを使用してデフォルト値を指定する事も出来る。
+	 @GetMapping("/boards/index")
+	  public String login(ModelMap modelMap, Principal principal,Model model) {
+	      String name = principal.getName();
 	      modelMap.addAttribute("username", name);
+
+//	      Page<Board> page = boardService.findAllBoard(pageable);
+//	      model.addAttribute("page", page);
+//	      model.addAttribute("boards", page.getContent());
+//	      model.addAttribute("url", "/boards/index");
+
 	      List<Board> boards = boardService.findAll();
 	      model.addAttribute("boards",boards);
 	      return "boards/index";
+
 	  }
 	 
-		@GetMapping("search")
+	 
+	 
+		@GetMapping("/boards/search")
 		public String serch(@RequestParam String name,Model model,ModelMap modelMap, Principal principal) {
 		    String username = principal.getName();//get logged in username
 		    modelMap.addAttribute("username", username);
@@ -62,12 +72,12 @@ public class BoardController {
 			return "/boards/index";
 		}
 
-	@GetMapping("new")
+	@GetMapping("/boards/new")
 	public String newBoard(Model model) {
 		return "boards/new";
 	}
 //
-	@GetMapping("{id}")
+	@GetMapping("/boards/{id}")
 	// URLのうちパラメータにしたい部分を{}で囲む。囲んだ文字列は@PathVariableの引数で参照できる
 	public String show(@PathVariable int id, Model model) {
 		Board board = boardService.findOne(id);
