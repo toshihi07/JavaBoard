@@ -39,6 +39,7 @@ private BoardService boardService;
 
 @GetMapping("new") 
 public String newComment(@PathVariable ("id") int board_id,Model model) {
+	//board_idからインスタンスを特定して、そのインスタンスのboardNameを取得したい。
 	int id = board_id;
 	model.addAttribute("board_id",id);
 	return "comments/new";
@@ -46,17 +47,23 @@ public String newComment(@PathVariable ("id") int board_id,Model model) {
 
 @GetMapping("{id}/edit")
 public String edit(@PathVariable int id, Model model) {
-    model.addAttribute("comment", commentService.findOne(id));
+	Comment comment = commentService.findOne(id);
+	int board_id = comment.getBoard_id();
+    model.addAttribute("comment", comment);
+    model.addAttribute("board_id", board_id);
+    model.addAttribute("comment_id", id);
     return "comments/edit";
 }
 
 @GetMapping("searchTitle")
 public String searchTitle(@PathVariable ("id") int board_id,@RequestParam String title,Model model,ModelMap modelMap, Principal principal) {
+	
     String username = principal.getName();//get logged in username
     modelMap.addAttribute("username", username);
 	List<Comment> comments = commentService.findByTitle(board_id,title);
 	model.addAttribute("comments",comments);
-	return "/comments/index";
+	//ここ！
+	return "/boards/{board_id}";
 }
 
 @GetMapping("searchText")
@@ -93,20 +100,21 @@ public String create(@PathVariable ("id") int board_id, @ModelAttribute Comment 
 	commentService.save(comment);
 	//掲示板のshow画面、コメントの一覧画面に戻る。
 //	return "redirect: /";
-    return "redirect:/comments/result";
+    return "boards/index";
 }
 
-@PutMapping("{id}")
+@PostMapping("{id}/update")
 public String update(@PathVariable int id, @ModelAttribute Comment comment) {
     comment.setComment_id(id);
     commentService.update(comment);
-    return "/boards/{board_id}/comments";
+    return "redirect:/boards/index";
+
 }
 
 @PostMapping("{id}")
 public String destroy(@PathVariable int id) {
     commentService.delete(id);
-    return "/boards/{board_id}/comments";
+    return "redirect:/boards/index";
 }
 	
 }
