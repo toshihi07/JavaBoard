@@ -27,7 +27,10 @@
 				<div>
 					<a href="/boards/new" class="btn btn-info btn-xs pull-right">新規作成</a>
 				</div>
-				<a href="/login"
+<!-- 				thymeleafのif文はシングルクォーテーションで囲む。
+ -->				<a th:if="${username != 'ゲスト'}" href="/logout"
+					class="login btn btn-info btn-xs pull-right mx-5　navbar-brand">ログアウト</a>
+					<a th:if="${username == 'ゲスト'}" href="/login"
 					class="login btn btn-info btn-xs pull-right mx-5　navbar-brand">ログイン</a>
 			</nav>
 		</div>
@@ -51,9 +54,9 @@
 						<td th:text="${i.index + 1}" scope="row">1</td>
 						<td><a
 							th:href="@{/boards/{board_id}(board_id=${board.board_id})}"
-							th:text="*{name}" th:method="get">ポケモン</a></td>
-						<td th:text="*{username}">サトシ</td>
-						<td th:text="*{created_at}"></td>
+							th:text="${board.name}" th:method="get">ポケモン</a></td>
+						<td th:text="${board.username}">サトシ</td>
+						<td th:text="${board.created_at}"></td>
 						<td>2020年2月25日</td>
 						<!-- 					<td><a class="btn btn-default btn-xs"
 						th:href="@{/boards/{id}(id=*{id})}">詳細</a></td> -->

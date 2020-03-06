@@ -15,13 +15,13 @@ import com.javaBorad.entity.Comment;
 @Mapper
 public interface CommentMapper {
 	//テーブル結合、3つ。where区で条件指定。
-    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = #{id}")
+    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN user ON comments.user_id = user.user_id WHERE boards.board_id = #{id}")
     List<Comment> findAll(int id);
     
-    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = ${id} AND title LIKE '%${title}%'")
+    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN user ON comments.user_id = user.user_id WHERE boards.board_id = ${id} AND title LIKE '%${title}%'")
     List<Comment> findByTitle(int id, String title);
     
-    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN users ON comments.user_id = users.user_id WHERE boards.board_id = ${id} AND text LIKE '%${text}%'")
+    @Select("select * from comments INNER JOIN boards ON comments.board_id = boards.board_id INNER JOIN user ON comments.user_id = user.user_id WHERE boards.board_id = ${id} AND text LIKE '%${text}%'")
     List<Comment> findByText(int id, String text);
     
     @Select("select * from comments where comment_id = #{comment_id}")
@@ -30,7 +30,7 @@ public interface CommentMapper {
     @Insert("insert into comments (title,text,board_id,user_id) values (#{title},#{text},#{board_id},#{user_id})")
     void save(Comment comment);
     
-    @Update("insert into s (title,text) values (#{title},#{text})")
+    @Update("update comments set title = #{title}, text = #{text} where comment_id = #{comment_id}")
     void update(Comment comment);
     
     @Delete("delete from comments where comment_id = #{comment_id}")

@@ -89,6 +89,13 @@ public class BoardController {
 		//show画面で使う変数を書き足し。
 		int board_id = board.getBoard_id();
 		model.addAttribute("board_id",board_id);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserData subject = (LoginUserData) auth.getPrincipal();
+        User user = subject.getUser();
+        int user_id = user.getUserId();
+		model.addAttribute("loginUser_id",user_id);
+		
 		return "boards/show";
 	}
 

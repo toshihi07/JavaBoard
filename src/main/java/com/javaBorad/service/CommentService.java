@@ -28,7 +28,7 @@ public class CommentService {
     
     @Transactional
     public List<Comment> findByText(int id,String text) {
-        return commentMapper.findByTitle(id,text);
+        return commentMapper.findByText(id,text);
     }
     @Transactional
     public Comment findOne(int id) {
@@ -42,7 +42,7 @@ public class CommentService {
 
     @Transactional
     public void update(Comment comment) {
-        commentMapper.save(comment);
+        commentMapper.update(comment);
     }
 
     @Transactional

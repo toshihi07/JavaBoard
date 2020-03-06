@@ -29,7 +29,7 @@
 					<button class="btn btn-outline-info my-2 my-sm-0" type="submit">検索</button>
 				</form>
 				<a href="/login"
-					class="btn btn-info btn-xs pull-right mx-5　navbar-brand">ログイン</a>
+					class="btn btn-info btn-xs pull-right mx-5　navbar-brand">ログアウト</a>
 			</nav>
 		</div>
 	</header>
@@ -50,14 +50,14 @@
 				<tbody>
 					<tr th:each="comment, i:${comments}" th:object="${comment}">
 						<td th:text="${i.count}" scope="row">1</td>
-						<td th:text="*{title}">ピカチュウ育成論</td>
-						<td th:text="*{text}">ありがとう！</td>
-						<td th:text="*{username}">サトシ</td>
-						<td th:text="*{created_at}">2020年2月22日</td>
-						<td><a class="btn btn-info btn-xs"
+						<td th:text="${comment.title}">ピカチュウ育成論</td>
+						<td th:text="${comment.text}">ありがとう！</td>
+						<td th:text="${comment.username}">サトシ</td>
+						<td th:text="${comment.created_at}">2020年2月22日</td>
+ 						<td><a th:if="${comment.user_id == loginUser_id}" class="btn btn-info btn-xs"
 							th:href="|/boards/${board_id}/comments/*{comment_id}/edit|">編集</a></td>
 						<td>
-							<form th:action="|/boards/${board_id}/comments/*{comment_id}|"
+							<form th:if="${comment.user_id == loginUser_id}" th:action="|/boards/${board_id}/comments/*{comment_id}|"
 								method="POST">
 								<button class="btn btn-info btn-xs">削除</button>
 							</form>
@@ -69,6 +69,15 @@
 				<a th:href="|${board_id}/comments/new|"><button
 						class="btn btn-info btn-block login" type="submit">投稿する</button></a>
 			</div>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="page-item"><a class="page-link" href="#">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="#">1</a></li>
+					<li class="page-item"><a class="page-link" href="#">2</a></li>
+					<li class="page-item"><a class="page-link" href="#">3</a></li>
+					<li class="page-item"><a class="page-link" href="#">Next</a></li>
+				</ul>
+			</nav>
 		</div>
 	</div>
 

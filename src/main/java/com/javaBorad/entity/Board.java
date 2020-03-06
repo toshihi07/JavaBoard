@@ -9,7 +9,6 @@ public class Board {
 	private String username;
 	private String name;
     private Timestamp created_at;
-	
 	public String getName() {
 		return name;
 	}

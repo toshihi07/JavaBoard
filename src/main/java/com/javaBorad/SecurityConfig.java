@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		//.antMatchers("/").permitAll()で全ユーザーがアクセスできる場所を記載
-		.antMatchers("/","/boards","/boards/{id}","/signup","/login","/boards/index").permitAll().anyRequest().authenticated().and().formLogin()
+		.antMatchers("/","/boards","/signup","/login","/boards/index","/boards/search","/boards//{id}/comments/searchTitle","/boards//{id}/comments/searchText").permitAll().anyRequest().authenticated().and().formLogin()
 				//.loginProcessingUrl("/authenticate")で記載したURLがログイン処理を行う。
 				.loginProcessingUrl("/authenticate")
 				//ログインフォームのパスを記載します。

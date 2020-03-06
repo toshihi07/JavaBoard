@@ -61,18 +61,39 @@ public String searchTitle(@PathVariable ("id") int board_id,@RequestParam String
     String username = principal.getName();//get logged in username
     modelMap.addAttribute("username", username);
 	List<Comment> comments = commentService.findByTitle(board_id,title);
+	
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    LoginUserData subject = (LoginUserData) auth.getPrincipal();
+    User user = subject.getUser();
+    int user_id = user.getUserId();
+	model.addAttribute("loginUser_id",user_id);
+	
+	Board board = boardService.findOne(board_id);
+	model.addAttribute("board", board);
+	model.addAttribute("boardName", board.getName());
 	model.addAttribute("comments",comments);
-	//ここ！
-	return "/boards/{board_id}";
+	model.addAttribute("board_id",board_id);
+	return "boards/show";
 }
 
 @GetMapping("searchText")
 public String searchText(@PathVariable ("id") int board_id,@RequestParam String text,Model model,ModelMap modelMap, Principal principal) {
-    String username = principal.getName();//get logged in username
+    String username = principal.getName();
     modelMap.addAttribute("username", username);
-	List<Comment> comments = commentService.findByTitle(board_id,text);
+	List<Comment> comments = commentService.findByText(board_id,text);	
+	
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    LoginUserData subject = (LoginUserData) auth.getPrincipal();
+    User user = subject.getUser();
+    int user_id = user.getUserId();
+	model.addAttribute("loginUser_id",user_id);
+	
+	Board board = boardService.findOne(board_id);
+	model.addAttribute("board", board);
+	model.addAttribute("boardName", board.getName());
 	model.addAttribute("comments",comments);
-	return "/comments/index";
+	model.addAttribute("board_id",board_id);
+	return "boards/show";
 }
 
 //th:actionからの送信はgetとpostの両方のmappingを書いておかないとエラーになる。
@@ -100,21 +121,30 @@ public String create(@PathVariable ("id") int board_id, @ModelAttribute Comment 
 	commentService.save(comment);
 	//掲示板のshow画面、コメントの一覧画面に戻る。
 //	return "redirect: /";
+    String sId = String.valueOf(board_id);
+    return "redirect:/boards/" + sId;
+}
+
+//ユーザーIDのセット
+@PostMapping("{comment_id}/update")
+public String update(@PathVariable("comment_id") int comment_id, @PathVariable("id") int id,@ModelAttribute Comment comment) {
+    comment.setComment_id(comment_id);
+    commentService.update(comment);
+    String sId = String.valueOf(id);
+    return "redirect:/boards/" + sId;
+}
+
+@GetMapping("{comment_id}/update")
+public String update() {
     return "boards/index";
 }
 
-@PostMapping("{id}/update")
-public String update(@PathVariable int id, @ModelAttribute Comment comment) {
-    comment.setComment_id(id);
-    commentService.update(comment);
-    return "redirect:/boards/index";
-
-}
-
-@PostMapping("{id}")
-public String destroy(@PathVariable int id) {
-    commentService.delete(id);
-    return "redirect:/boards/index";
+@PostMapping("{comment_id}")
+public String destroy(@PathVariable("comment_id") int comment_id,@PathVariable("id") int id) {
+    commentService.delete(comment_id);
+    String sId = String.valueOf(id);
+    //文字列に変換する
+    return "redirect:/boards/" + sId;
 }
 	
 }
