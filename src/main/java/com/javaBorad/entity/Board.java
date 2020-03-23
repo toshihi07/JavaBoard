@@ -1,14 +1,31 @@
 package com.javaBorad.entity;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="boards")
 
 public class Board {
+	@Id
+	@GeneratedValue
+	@Column(name = "board_id")
 	private int board_id;
+	@Column(name = "user_id")
 	private int user_id;
+	@Column(name = "username")
 	private String username;
+	@Column(name = "name")
 	private String name;
-    private Timestamp created_at;
+	@Column(name = "created_at")
+    private Date created_at;
+	
 	public String getName() {
 		return name;
 	}
@@ -16,17 +33,17 @@ public class Board {
 		this.name = name;
 	}
 
-	public Timestamp getCreated_at() {
+	public Date getCreated_at() {
 		return created_at;
 	}
-	public void setCreated_at(Timestamp created_at) {
+	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
 	}
 	public int getBoard_id() {
 		return board_id;
 	}
-	public void setBoard_id(int board_id) {
-		this.board_id = board_id;
+	public void setBoard_id(int id) {
+		this.board_id = id;
 	}
 	public int getUser_id() {
 		return user_id;
@@ -41,9 +58,10 @@ public class Board {
 		this.username = username;
 	}
 	
+
 	public String toFormat() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        String str = sdf.format(created_at);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		String str = sdf.format(created_at);
 		return str;
-	}	
+	}
 }

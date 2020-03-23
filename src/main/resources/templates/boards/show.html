@@ -16,75 +16,99 @@
 		<div class="p-header-container">
 			<nav class="navbar navbar-light justify-content-between">
 				<div th:text="${boardName}">ポケモン育成論掲示板</div>
+
+				<select class="search cp_ipselect cp_sl01">
+					<option value="キーワード" selected>キーワード検索</option>
+					<option value="タイトル">タイトルから検索</option>
+					<option value="本文">本文から検索</option>
+				</select>
+				<form th:action="|/boards/${board_id}/comments/searchWord|"
+					method="get" class="form-inline wordsearch">
+					<input name="word" class="form-control mr-sm-2" type="search"
+						placeholder="キーワード検索" aria-label="Search">
+					<button class="btn btn-outline-info my-2 my-sm-0" type="submit">検索</button>
+				</form>
+
 				<form th:action="|/boards/${board_id}/comments/searchTitle|"
-					method="get" class="form-inline">
+					method="get" class="form-inline titlesearch">
 					<input name="title" class="form-control mr-sm-2" type="search"
 						placeholder="タイトルから検索" aria-label="Search">
 					<button class="btn btn-outline-info my-2 my-sm-0" type="submit">検索</button>
 				</form>
+
 				<form th:action="|/boards/${board_id}/comments/searchText|"
-					method="get" class="form-inline">
+					method="get" class="form-inline textsearch">
 					<input name="text" class="form-control mr-sm-2" type="search"
 						placeholder="本文から検索" aria-label="Search">
 					<button class="btn btn-outline-info my-2 my-sm-0" type="submit">検索</button>
 				</form>
+
 				<a href="/login"
 					class="btn btn-info btn-xs pull-right mx-5　navbar-brand">ログアウト</a>
 			</nav>
 		</div>
 	</header>
 	<div class="main">
-		<div class="container">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th scope="col">No.</th>
-						<th scope="col">タイトル</th>
-						<th scope="col">本文</th>
-						<th scope="col">投稿者</th>
-						<th scope="col">投稿日時</th>
-						<th></th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="comment, i:${comments}" th:object="${comment}">
-						<td th:text="${i.count}" scope="row">1</td>
-						<td th:text="${comment.title}">ピカチュウ育成論</td>
-						<td th:text="${comment.text}">ありがとう！</td>
-						<td th:text="${comment.username}">サトシ</td>
-						<td th:text="${comment.created_at}">2020年2月22日</td>
- 						<td><a th:if="${comment.user_id == loginUser_id}" class="btn btn-info btn-xs"
-							th:href="|/boards/${board_id}/comments/*{comment_id}/edit|">編集</a></td>
-						<td>
-							<form th:if="${comment.user_id == loginUser_id}" th:action="|/boards/${board_id}/comments/*{comment_id}|"
-								method="POST">
-								<button class="btn btn-info btn-xs">削除</button>
-							</form>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<div>
-				<a th:href="|${board_id}/comments/new|"><button
-						class="btn btn-info btn-block login" type="submit">投稿する</button></a>
+		<div class="comment-container">
+			<div class="comment-index">
+				<div th:each="comment, i:${comments}" th:object="${comment}"
+					class="comment-contents">
+					<span th:text="${i.count} + '.'">1</span>
+					<span th:text="${comment.username}">サトシ</span>
+					<span th:text="${comment.created_at}">2020年3月20日</span>
+					<div><a th:text="'タイトル:' + ${comment.title}" th:href="|/boards/${board_id}/comments/*{comment_id}|" class="my-2">ピカチュウ</a></div>
+					<div th:text="${comment.text}" class="mb-2">交換</div>
+					<div class="content-footer d-flex justify-content-end flex-row bd-highlight" >
+										<div th:if="${comment.image != ''}" th:text="画像あり"  style= "line-height:33px;"></div>
+						<a th:if="${comment.user_id == loginUser_id}"
+							class="btn btn-info edit-btn"
+							th:href="|/boards/${board_id}/comments/*{comment_id}/edit|">編集</a>
+						<form th:if="${comment.user_id == loginUser_id}"
+							th:action="|/boards/${board_id}/comments/*{comment_id}|"
+							method="POST">
+							<button class="btn btn-info edit-btn">削除</button>
+						</form>
+					</div>
+				</div>
 			</div>
-			<nav aria-label="Page navigation example">
-				<ul class="pagination">
-					<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-					<li class="page-item"><a class="page-link" href="#">1</a></li>
-					<li class="page-item"><a class="page-link" href="#">2</a></li>
-					<li class="page-item"><a class="page-link" href="#">3</a></li>
-					<li class="page-item"><a class="page-link" href="#">Next</a></li>
-				</ul>
-			</nav>
 		</div>
-	</div>
+		
+				<div>
+			<a th:href="|${board_id}/comments/new|"><button
+					class="btn btn-info btn-block login" type="submit" style="margin-top: 10px;">投稿する</button></a>
+		</div>
+		
+		<div>
+			<form  th:action="|/boards/${board_id}/comments/download|" method="post"><button
+					class="btn btn-success btn-block login" type="submit" style="margin-top: 10px;">この掲示板をダウンロード</button></form>
+		</div>
+		
+				<div>
+			<form  th:action="|/boards/${board_id}/comments/download|" method="post"><button
+					class="btn btn-warning btn-block login" type="submit" style="margin-top: 10px;">データをエクセルからインポート</button></form>
+		</div>
+		
+		
+		
+					<nav aria-label="Page navigation example">
 
-	<script type="text/javascript"
-		th:src="@{/webjars/jquery/1.12.4/jquery.min.js}"></script>
-	<script type="text/javascript"
-		th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
+					<ul class="pagination justify-content-center">
+						<li class="page-item"><a class="page-link" th:href="@{|/boards/${id}|}">先頭へ</a></li>
+						<li class="page-item" th:each="pageNumber : ${pageNumbers}"><a
+							class="page-link" th:href="@{|${pageNumber}|}"
+							th:text=${pageNumber}>1</a></li>
+						<li class="page-item"><a class="page-link"
+							th:href="@{|${pageNumber}|}">最後へ</a></li>
+					</ul>
+			</nav>
+		
+	</div>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="/js/comment.js" th:src="@{/js/comment.js}"></script>
 </body>
 </html>
 

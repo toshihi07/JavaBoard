@@ -30,10 +30,13 @@ public interface BoardMapper {
     @Select("select * from boards INNER JOIN user ON boards.user_id = user.user_id WHERE name LIKE '%${name}%'")
     List<Board> findByKeyword(String name);
     
+    @Select("select * from boards INNER JOIN user ON boards.user_id = user.user_id WHERE name LIKE '%${name}%'")
+    Page<Board> findByName(String name,Pageable pageable);
+    
     @Select("select * from boards where board_id = #{board_id}")
     Board findOne(int id);
     
-    @Insert("insert into boards (name,user_id) values (#{name},#{user_id})")
+    @Insert("insert into boards (name,user_id,username) values (#{name},#{user_id},#{username})")
     void save(Board board);
     
     @Update("insert into boards (name) values (#{name})")

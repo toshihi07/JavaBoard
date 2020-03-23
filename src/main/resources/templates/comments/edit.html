@@ -27,18 +27,23 @@
 	</header>
 	<div class="main">
 		<div class="container">
-			<form method="Post" action="#"
+			<form method="Post" action="#" enctype="multipart/form-data"
 				th:action="|/boards/${board_id}/comments/${comment_id}/update|">
 				<div class="form-group text-center">
-					<label>タイトル</label> <input type="text" name="title"
-						class="form-control" autofocus="autofocus">
+					<label>タイトル</label> <input th:object="${comment}" th:field="*{title}"  type="text"
+						name="title" class="form-control" autofocus="autofocus">
 				</div>
 				<div class="form-group text-center">
 					<label for="exampleFormControlTextarea1">本文</label>
-					<textarea name="text" class="form-control"
-						id="exampleFormControlTextarea1" rows="3" required="required"
+					<textarea th:object="${comment}" th:field="*{text}" name="text" class="form-control"
+						id="exampleFormControlTextarea1" rows="6" required="required"
 						autofocus="autofocus"></textarea>
 				</div>
+				<div th:if="${base64 != ''}">
+					<label>現在の画像</label> 
+					<img th:src="${base64image}"/>
+					画像を変更：<input type="file" th:object="${imageForm}" name="image" class="m-1" /><br />
+				</div >
 				<button class="btn btn-info btn-block login" type="submit">更新する</button>
 			</form>
 		</div>

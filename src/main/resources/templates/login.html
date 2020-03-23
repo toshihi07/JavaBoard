@@ -13,7 +13,6 @@
 	<div class="container">
 		<div class="login-container">
 			<p th:text="${user}"></p>
-			<div class="avatar"></div>
 			<div class="form-box">
 				<form th:action="@{/authenticate}" th:method="post">
 					<div th:if="${param.error}">ユーザー名またはパスワードが正しくありません</div>
